@@ -52,13 +52,13 @@ int colonCount(const char* timestamp, int stPos) {
     }
 
     return count;
-
+}
 
 bool validateYear(const char* timestamp) {
 
     int i = 0;
     int N = strlen(timestamp);
-    while( i < strlen(timestamp) && timestamp[i] != '-' )
+    while( i < N && timestamp[i] != '-' )
         i++;
 
     if( i == N || i > 4 )
@@ -79,12 +79,13 @@ bool validateYear(const char* timestamp) {
 bool validateMonth(const char* timestamp) {
 
     int i = 0;
-    while( i < strlen(timestamp) && timestamp[i] != '-' )
+    int N = strlen(timestamp);
+    while( i < N && timestamp[i] != '-' )
         i++;
 
     int stPos = i+1;
     
-    while( i < strlen(timestamp) && timestamp[i] != '-' )
+    while( i < N && timestamp[i] != '-' )
         i++;
 
     if( i-stPos != 2 )
@@ -106,7 +107,8 @@ bool validateMonth(const char* timestamp) {
 bool validateDate(const char* timestamp) {
 
     int i = 0, count = 0;
-    while( i < strlen(timestamp) && timestamp[i] != '-' && count != 2 ) {
+    int N = strlen(timestamp);
+    while( i < N && timestamp[i] != '-' && count != 2 ) {
         if( timestamp[i] == '-')
             count++;
         i++;
@@ -114,7 +116,7 @@ bool validateDate(const char* timestamp) {
         
     int stPos = i+1;
     
-    while( i < strlen(timestamp) && timestamp[i] != 'T' )
+    while( i < N && timestamp[i] != 'T' )
         i++;
 
     if( i-stPos != 2 )
@@ -137,20 +139,21 @@ bool validateDate(const char* timestamp) {
 
 bool validateHour(const char* timestamp) {
 
-    int i = 0, count = 0;
-    while( i < strlen(timestamp) && timestamp[i] != 'T' ) {
+    int i = 0;
+    int N = strlen(timestamp); 
+    while( i < N && timestamp[i] != 'T' ) {
         i++;
     }
     
-    if( i == strlen(timestamp) )
+    if( i == N )
         return false;
 
     int stPos = i+1;
     
-    while( i < strlen(timestamp) && timestamp[i] != ':' )
+    while( i < N && timestamp[i] != ':' )
         i++;
 
-    if( i == strlen(timestamp) )
+    if( i == N )
         return false;
 
     if( i-stPos != 2 )
@@ -169,20 +172,21 @@ bool validateHour(const char* timestamp) {
 
 bool validateMin(const char* timestamp) {
 
-    int i = 0, count = 0;
-    while( i < strlen(timestamp) && timestamp[i] != ':' ) {
+    int i = 0;
+    int N = strlen(timestamp);
+    while( i < N && timestamp[i] != ':' ) {
         i++;
     }
     
-    if( i == strlen(timestamp) )
+    if( i == N )
         return false;
 
     int stPos = i+1;
     
-    while( i < strlen(timestamp) && timestamp[i] != ':' )
+    while( i < N && timestamp[i] != ':' )
         i++;
 
-    if( i == strlen(timestamp) )
+    if( i == N )
         return false;
 
     if( i-stPos != 2 )
@@ -200,7 +204,8 @@ bool validateMin(const char* timestamp) {
 bool validateSec(const char* timestamp) {
 
     int i = 0, count = 0;
-    while( i < strlen(timestamp) && timestamp[i] != ':' && count != 2 ) {
+    int N = strlen(timestamp);
+    while( i < N && timestamp[i] != ':' && count != 2 ) {
         if( timestamp[i] != '+' || timestamp[i] != '-')
             break;
         if( timestamp[i] == ':')
@@ -208,15 +213,15 @@ bool validateSec(const char* timestamp) {
         i++;
     }
     
-    if( i == strlen(timestamp) || count != 2 )
+    if( i == N || count != 2 )
         return false;
 
     int stPos = i+1;
     
-    while( i < strlen(timestamp) && ( timestamp[i] != 'Z' || timestamp[i] != '+' || timestamp[i] != '-' )  )
+    while( i < N && ( timestamp[i] != 'Z' || timestamp[i] != '+' || timestamp[i] != '-' )  )
         i++;
 
-    if( i == strlen(timestamp) )
+    if( i == N )
         return false;
 
     if( i-stPos != 2 )
@@ -238,7 +243,7 @@ bool validateTZD(const char* timestamp) {
     if( timestamp[N-1] == 'Z' )
         return true;
     
-    while( i < N && (timestamp[i] != '+' || timestamp != '-') ) {
+    while( i < N && (timestamp[i] != '+' || timestamp[i] != '-') ) {
         i++;
     }  
 
@@ -258,10 +263,10 @@ bool validateTZD(const char* timestamp) {
 
     int stPos = i+1;
     
-    while( i < strlen(timestamp) && timestamp[i] != ':' )
+    while( i < N && timestamp[i] != ':' )
         i++;
 
-    if( i == strlen(timestamp) )
+    if( i == N )
         return false;
 
     if( i-stPos != 2 )
@@ -277,10 +282,10 @@ bool validateTZD(const char* timestamp) {
     
     stPos = i+1;
     
-    while( i < strlen(timestamp) && timestamp[i] != ':' )
+    while( i < N && timestamp[i] != ':' )
         i++;
 
-    if( i == strlen(timestamp) )
+    if( i == N )
         return false;
 
     if( i-stPos != 2 )
@@ -298,7 +303,12 @@ bool validateTZD(const char* timestamp) {
 
 void getSeperatorCount(const char* timestamp, int& hyfenCount, int& colonCount, int& plusCount, int& minusCount, bool& tzd) {
 
-    int count = 0;
+    hyfenCount = 0;
+    colonCount = 0;
+    plusCount = 0;
+    minusCount = 0;
+    tzd = false;
+
     int N = strlen(timestamp);
     bool isHourFormatIndicator = false;
     for(int i = 0; i <N; i++ ) {
@@ -325,19 +335,19 @@ bool validateSeperators(const char* timestamp) {
 
     getSeperatorCount(timestamp, hyfenCount, colonCount, plusCount, minusCount, tzd);
 
-    if( hyfencount != 2) {
+    if( hyfenCount != 2) {
         return false;
     }
 
-    if( coloncount < 2 || coloncount > 3) {
+    if( colonCount < 2 || colonCount > 3) {
         return false;
-    } else if( coloncount > 2 ) {
-        int pluscount = plusCount(timestamp);
-        int minuscount = minusCount(timestamp);
+    } else if( colonCount > 2 ) {
+        //int pluscount = plusCount(timestamp);
+        //int minuscount = minusCount(timestamp);
 
-        if( pluscount != 1 && minuscount != 1) {
+        if( plusCount != 1 && minusCount != 1) {
             return false;
-        } else if( pluscount == 1 && minuscount == 1) {
+        } else if( plusCount == 1 && minusCount == 1) {
             return false;
         }
     }    
@@ -355,7 +365,7 @@ bool validateTimeStamp(const char* timestamp) {
         return false;
     }
     
-    if( !validateYear(timestamp) || !validateMonth(timestamp) || !validateDate(timestamp) || !validateHour(timestamp) || !validateMin(timestamp) || !validateSec(timestamp) || !validateTZD(timestamp) ||) {
+    if( !validateYear(timestamp) || !validateMonth(timestamp) || !validateDate(timestamp) || !validateHour(timestamp) || !validateMin(timestamp) || !validateSec(timestamp) || !validateTZD(timestamp)) {
         return false;
     }
     
