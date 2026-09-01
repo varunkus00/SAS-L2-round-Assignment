@@ -12,8 +12,8 @@ BIN	:= exec
 
 all: $(BIN)
 
-# Rule to compile src/sample.c and tests/sampleTest.cc into exec
-$(BIN): $(SRCS_DIR)/sample.c $(TEST_DIR)/sampleTest.cc
+# Rule to compile src/api/*.c and tests/sampleTest.cc into exec
+$(BIN): $(SRCS_DIR)/api/*.c $(SRCS_DIR)/*.cc $(TEST_DIR)/sampleTest.cc
 	$(CXX) $(CXXFLAGS) $^ -o $@
 
 # Run tests directly
