@@ -35,9 +35,10 @@ void TimeStampWrapperClass::run() {
     while (fileContent != nullptr && *fileContent != nullptr) {
         std::string timestamp(*fileContent);
         if (timeValidator->validateTimestamp(timestamp)) {
-            if( !uniqueValueChecker->insertValue(timestamp.c_str())) {
+            if( uniqueValueChecker->isValuePresent(timestamp.c_str())) {
                 std::cerr << "Duplicate timestamp found: " << timestamp << std::endl;
             } else {
+                uniqueValueChecker->insertValue(timestamp.c_str());
                 outputGenerator->WriteOutputToFile(timestamp);
                 outputGenerator->WriteOutputToFile("\n");
             }

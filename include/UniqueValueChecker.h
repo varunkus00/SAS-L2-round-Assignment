@@ -12,9 +12,9 @@ namespace timestamp {
         ~UniqueValueChecker();
 
         bool insertValue(const char* value);
-        const char* getValue();
+        bool isValuePresent(const char* value);
         long long getHash(const char* value);
-        
+
 
        private:
         char** buckets;

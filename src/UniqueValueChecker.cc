@@ -28,7 +28,7 @@ long long UniqueValueChecker::getHash(const char* value) {
 
 bool UniqueValueChecker::insertValue(const char* value) {
 
-    if( bucketCount >= HASH_TABLE_SIZE) {
+    if( bucketCount >= HASH_TABLE_SIZE) { //To-Do Implement Rehash
         std::cerr << "Hash table is full. Will Reallocate." << std::endl;
         return false;
     }
@@ -59,6 +59,17 @@ bool UniqueValueChecker::insertValue(const char* value) {
     return true; 
 }
 
+bool UniqueValueChecker::isValuePresent(const char* value) {
+
+    long long currentHash = getHash(value);
+    int index = currentHash % HASH_TABLE_SIZE;
+
+    if( buckets[index] != nullptr )
+        return true;
+
+    return false;
+
+}
 
 
 

@@ -1,6 +1,6 @@
 #include "api/timeStampValidator.h"
 
-int hyfenCount(const char* timestamp) {
+/*int hyfenCount(const char* timestamp) {
     int count = 0;
     int N = strlen(timestamp);
     for(int i = 0; i <N; i++ ) {
@@ -49,23 +49,41 @@ int minusCount(const char* timestamp) {
     }
 
     return count;
+}*/
+
+void getSeperatorCount(const char* timestamp, int& hyfenCount, int& colonCount, int& plusCount, int& minusCount, bool& tzd) {
+
+    int count = 0;
+    int N = strlen(timestamp);
+    bool isHourFormatIndicator = false;
+    for(int i = 0; i <N; i++ ) {
+        if(timestamp[i] == 'T')
+            isHourFormatIndicator = true;
+        if(timestamp[i] == '-' && isHourFormatIndicator == false )
+            hyfenCount++;
+        if(timestamp[i] == ':')
+            colonCount++;
+        if(timestamp[i] == '+')
+            plusCount++;
+        if(isHourFormatIndicator && timestamp[i] == '-')
+            minusCount++;
+        if(timestamp[i] == 'Z')
+            tzd = true;
+    }   
+
 }
 
+bool validateSeperators(const char* timestamp) {
 
-bool validateTimeStamp(const char* timestamp) {
+    int hyfenCount = 0, colonCount = 0, plusCount = 0, minusCount = 0;
+    bool tzd = false;
 
-    if( !timestamp) {
-        return false;
-    }
+    getSeperatorCount(timestamp, hyfenCount, colonCount, plusCount, minusCount, tzd);
 
-    //Count number of '-' in the timestamp
-    int hyfencount = hyfenCount(timestamp);
     if( hyfencount != 2) {
         return false;
     }
 
-    //Count number of ':' in the timestamp
-    int coloncount = colonCount(timestamp);
     if( coloncount < 2 || coloncount > 3) {
         return false;
     } else if( coloncount > 2 ) {
@@ -77,7 +95,22 @@ bool validateTimeStamp(const char* timestamp) {
         } else if( pluscount == 1 && minuscount == 1) {
             return false;
         }
+    }    
+
+    return true;
+}
+
+bool validateTimeStamp(const char* timestamp) {
+
+    if( !timestamp) {
+        return false;
     }
+
+    if( !validateSeperators(timestamp) ) {
+        return false;
+    }
+    //Count number of '-' in the timestamp
+    
 
     return true;
 }
