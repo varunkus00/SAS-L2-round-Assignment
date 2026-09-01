@@ -10,7 +10,7 @@ namespace timestamp {
         InputFileReader(const std::string& filename);
         ~InputFileReader();
 
-        void ReadFromFile();
+        bool ReadFromFile();
         FILE* OpenFileToRead();
         bool isFileOpen();
         char** getFileContent() {

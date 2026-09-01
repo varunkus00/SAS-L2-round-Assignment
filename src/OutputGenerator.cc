@@ -13,17 +13,17 @@ OutputGenerator::~OutputGenerator() {
     delete filehandler;
 }
 
-bool OutputGenerator::IsFileOpen() {
+bool OutputGenerator::isFileOpen() {
     FILE* file = filehandler->getFileStream();
     return (file != nullptr);
 }
 
-OutputGenerator::OpenFileToWrite() {
+FILE* OutputGenerator::OpenFileToWrite() {
     return filehandler->openFile(filename, std::ios_base::out);
 }
 
 bool OutputGenerator::WriteOutputToFile(const std::string& output) {
-    if( !IsFileOpen()) {
+    if( !isFileOpen()) {
         OpenFileToWrite();
     }
 
@@ -32,6 +32,6 @@ bool OutputGenerator::WriteOutputToFile(const std::string& output) {
         std::cerr << "Error writing to file: " << filename << std::endl;
         return false;
     }
-    cout << " Number of bytes written: " << bytesWritten << std::endl;
+    std::cout << " Number of bytes written: " << bytesWritten << std::endl;
     return true;   
 }

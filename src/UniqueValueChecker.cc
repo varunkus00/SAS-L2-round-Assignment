@@ -3,9 +3,10 @@
 using namespace timestamp;
 
 UniqueValueChecker::UniqueValueChecker() : bucketCount(0) {
-    *buckets = new char[HASH_TABLE_SIZE];
+    buckets = new char*[HASH_TABLE_SIZE];
+    
     for (int i = 0; i < HASH_TABLE_SIZE; ++i) {
-        *buckets[i] = nullptr;
+        buckets[i] = nullptr;
     }
 }
 

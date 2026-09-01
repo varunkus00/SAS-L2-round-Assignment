@@ -1,7 +1,8 @@
 #include <iostream>
 #include "TimeValidator.h"
-#include "FileHandler.h"
+#include "InputFileReader.h"
 #include "OutputGenerator.h"
+#include "UniqueValueChecker.h"
 
 
 namespace timestamp {
@@ -20,6 +21,7 @@ namespace timestamp {
         OutputGenerator* getOutputGenerator();
         InputFileReader* getInputFileReader();
         UniqueValueChecker* getUniqueValueChecker();
+        void run();
          
       private:
         TimeValidator* timeValidator;

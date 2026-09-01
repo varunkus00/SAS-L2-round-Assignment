@@ -39,6 +39,7 @@ void TimeStampWrapperClass::run() {
                 std::cerr << "Duplicate timestamp found: " << timestamp << std::endl;
             } else {
                 outputGenerator->WriteOutputToFile(timestamp);
+                outputGenerator->WriteOutputToFile("\n");
             }
         } else {
             std::cerr << "Invalid timestamp: " << timestamp << std::endl;

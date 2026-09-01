@@ -10,7 +10,7 @@ namespace timestamp {
         OutputGenerator(const std::string& filename);
         ~OutputGenerator();
 
-        void WriteOutputToFile(const std::string& output, const std::string& filename);
+        bool WriteOutputToFile(const std::string& output);
         FILE* OpenFileToWrite();
         bool isFileOpen();
 

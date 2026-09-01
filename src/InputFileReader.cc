@@ -1,4 +1,4 @@
-#include "OutputGenerator.h"
+#include "InputFileReader.h"
 
 using namespace timestamp;
 
@@ -13,17 +13,17 @@ InputFileReader::~InputFileReader() {
     delete filehandler;
 }
 
-bool InputFileReader::IsFileOpen() {
+bool InputFileReader::isFileOpen() {
     FILE* file = filehandler->getFileStream();
     return (file != nullptr);
 }
 
-InputFileReader::OpenFileToRead() {
+FILE* InputFileReader::OpenFileToRead() {
     return filehandler->openFile(filename, std::ios_base::in);
 }
 
 bool InputFileReader::ReadFromFile() {
-    if( !IsFileOpen()) {
+    if( !isFileOpen()) {
         OpenFileToRead();
     }
     // Implementation for reading from file
