@@ -17,7 +17,7 @@ namespace timestamp {
         FILE* getFileStream();
         FILE* openFile(const std::string& filename, std::ios_base::openmode mode = std::ios_base::in | std::ios_base::out);
         void closeFile();
-        void writeToFile(const std::string& output);
+        int writeToFile(const std::string& output);
         void readFile();
         char** getFileContent() {
             return fileContent;

@@ -7,14 +7,17 @@ namespace timestamp {
     class OutputGenerator {
 
       public:
-        OutputGenerator();
+        OutputGenerator(const std::string& filename);
         ~OutputGenerator();
 
         void WriteOutputToFile(const std::string& output, const std::string& filename);
+        FILE* OpenFileToWrite();
+        bool isFileOpen();
 
       private:
         FileHandler* filehandler;
-        std::string output;
+        std::string filename;
+        //std::string output;
     };    
 
 }    

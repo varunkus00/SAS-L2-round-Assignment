@@ -7,23 +7,25 @@
 namespace timestamp {
 
     class TimeValidator;
-    class FileHandler;
     class OutputGenerator;
+    class InputFileReader;
 
     class TimeStampWrapperClass {
 
       public:
-        TimeStampWrapperClass();
+        TimeStampWrapperClass(const std::string& inputFileName, const std::string& outputFileName);
         ~TimeStampWrapperClass();
 
-        TimeValidator* getTimeValidator();
-        FileHandler* getFileHandler(); 
+        TimeValidator* getTimeValidator(); 
         OutputGenerator* getOutputGenerator();
+        InputFileReader* getInputFileReader();
+        UniqueValueChecker* getUniqueValueChecker();
          
       private:
         TimeValidator* timeValidator;
-        FileHandler* fileHandler;
         OutputGenerator* outputGenerator;  
+        InputFileReader* inputFileReader;
+        UniqueValueChecker* uniqueValueChecker;
     };
 
 }    

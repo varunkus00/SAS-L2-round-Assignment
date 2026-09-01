@@ -53,12 +53,17 @@ void FileHandler::closeFile() {
     
 }
 
-void FileHandler::writeToFile(const std::string& output) {
+int FileHandler::writeToFile(const std::string& output) {
+    
+    int bytesWritten = 0;
+    
     if (file) {
-        fwrite(output.c_str(), sizeof(char), output.size(), file);
+        bytesWritten = fwrite(output.c_str(), sizeof(char), output.size(), file);
     } else {
         std::cerr << "File is not open for writing." << std::endl;
     }
+
+    return bytesWritten;
 }
 
 void FileHandler::readFile() {
@@ -70,24 +75,29 @@ void FileHandler::readFile() {
     std::cout << " Going to read file content" << std::endl;
     int bytesRead = 0;
     while ( (bytesRead = fread(buffer, sizeof(char), MAX_BUFFER_SIZE, file)) > 0) {
-        //fread(buffer, sizeof(buffer), MAX_BUFFER_SIZE, file);
-        //offset += file.gcount();
         std::cout << " Reading file content linennumber 74" << std::endl;
+
+        buffer[bytesRead] = '\0';
+
         int i = 0;
-        while( i < MAX_BUFFER_SIZE) {
-            int pos = 0, stPos = i;
-            while( buffer[i] != '\n' && buffer[i] != '\0' && i < MAX_BUFFER_SIZE) {
-                pos++;
+        while( i < bytesRead && currIdx < 10) {
+            int stPos = i;
+
+            while (i < bytesRead && buffer[i] != '\n') {
                 i++;
             }
-            int len = pos - stPos;
-            if( len > 0 ) {
+
+            int len = i - stPos;
+            if( len > 0 && currIdx < 10) {
                 fileContent[currIdx] = new char[len + 1];
                 strncpy(fileContent[currIdx], buffer + stPos, len);
                 fileContent[currIdx][len] = '\0';
                 currIdx++;
                 std::cout << " Read line: " << fileContent[currIdx - 1] << std::endl;
             }
+            /*while (i < bytesRead && (buffer[i] == '\n')) {
+                i++;
+            }*/
             i++;
         }
         // Process the read data as needed
